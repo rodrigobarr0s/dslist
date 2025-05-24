@@ -4,11 +4,16 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_belonging")
-public class Belonging {
+public class Belonging implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @EmbeddedId
     private BelongingPK id = new BelongingPK();
