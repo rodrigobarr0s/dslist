@@ -3,6 +3,7 @@ package io.github.rodrigobarr0s.dslist.services;
 import io.github.rodrigobarr0s.dslist.dto.GameDTO;
 import io.github.rodrigobarr0s.dslist.dto.GameMinDTO;
 import io.github.rodrigobarr0s.dslist.entities.Game;
+import io.github.rodrigobarr0s.dslist.projections.GameMinProjection;
 import io.github.rodrigobarr0s.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,19 @@ public class GameService {
     private GameRepository repository;
 
     @Transactional(readOnly = true)
+    public GameDTO findById(Long id) {
+        Game game = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Game not found!"));
+        return new GameDTO(game);
+    }
+
+    @Transactional(readOnly = true)
     public List<GameMinDTO> findAll() {
         return repository.findAll().stream().map(GameMinDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public GameDTO findById(Long id) {
-        Game game = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Game not found!"));
-        return new GameDTO(game);
+    public List<GameMinDTO> searchByList(Long listId) {
+        return repository.searchByList(listId).stream().map(GameMinDTO::new).toList();
     }
+
 }
